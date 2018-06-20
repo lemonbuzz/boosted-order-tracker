@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/> 
+    <meta charset="utf-8"/>   
+    <style>
+        .card-panel .card-title {
+            font-size: 24px;
+            font-weight: 300;
+        }
+        .hidden {
+            display:none;
+        }
+        .orders {
+            padding: 24px;
+        }
+        .middle{
+            vertical-align: middle;
+        }
+        .middle:hover{
+            cursor: pointer;
+        }
+        </style>
+  </head>
+    
+  <body>
+    <div class="container" >
+        <div class="row">
+            <div class="col s12 m10 l8">
+                <div class="card-panel">   
+                    <span class="card-title">Share your Boosted order status  <a class="modal-trigger" href="#modal_info" alt="about"><i class="material-icons middle">info_outline</i></a></span>
+                    <div class="input-field">
+                            <select id="board_list">
+                                <option value="0">Boosted Mini S</option>
+                                <option value="1">Boosted Mini X</option>
+                                <option value="2">Boosted Plus</option>
+                                <option value="3">Boosted Stealth</option>
+                            </select>
+                            <label id="board-lbl">Board</label>
+                        </div>
+                    <div class="input-field">
+                        <input  id="order_number" type="text" data-length="6">
+                        <label id="lbl_order" for="order_number">Order #</label>
+                    </div>
+                    <div class="input-field">
+                        <input id="order_date_picker" type="text" class="datepicker">
+                        <label for="order_date_picker">Order date</label>
+                    </div>
+                   
+                    <p>
+                        <label>
+                            <input type="checkbox" id="ship_confirmation_yesno" class="checkbox-orange"/>
+                            <span>I have received a shipping confirmation email</span>
+                        </label>
+                    </p>
+                    <div class="input-field hidden" id="ship_confirmation_container">
+                        <input id="order_confirmation_date_picker" type="text" class="datepicker">
+                        <label for="order_confirmation_date_picker">Shipping confirmation date</label>
+                        
+                        <p>
+                            <label>
+                                <input type="checkbox" id="receive_confirmation_yesno"/>
+                                <span>I have received my order!</span>
+                            </label>
+                        </p>
+                    </div>
+
+                    <div class="input-field hidden" id="receive_confirmation_container">
+                        <input id="receive_date_picker" type="text" class="datepicker">
+                        <label for="order_date">Reception date</label>
+                    </div>
+                    
+                    <a id="submit" class="waves-effect btn-flat">Share</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="orders">
+        <div class="row">
+            <div class="col s12 m10 l8">
+                <div class="card orders">
+                    <span class="card-title">Orders shared by the community</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Board</th>
+                                <th>Order #</th>
+                                <th>Order date</th>
+                                <th>Ship date</th>
+                                <th>Receive date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>          
+    </div>
+    <div id="modal_info" class="modal">
+        <div class="modal-content">
+            <h4>About this app</h4>
+            <h5>Why?</h5>
+            <p>
+                We, the Boosted Board community, are very impatient and excited to receive our board. Some of us
+                are constantly wondering if new shipments have been made
+            </p>
+            <p>
+                I have noticed a lot of posts on /r/boostedboards regarding order confirmation/status updates.
+                This gave me the idea of creating this very simple app to let the community track Boosted's "order back log".
+            </p>
+            
+            <h5>How does it work?</h5>
+            <p>
+                Users are authenticated anonymously. We use the browser session as a reference to identify you.
+                This means that if you want to update the status of your order for others to see, 
+                you have to use the same computer and browser
+                used for creating it. Otherwise, it will create a duplicate order status in the database.
+            </p>
+            <p>You never have to refresh the page. It works in real time as people are updating their order status on the app</p>
+            <p>Use it to reduce your BB anxiety ;). We are all very impatient to receive our Boosted Board</p>
+            <p>Ride safe</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-teal  btn-flat">Got it</a>
+        </div>
+    </div>
+    <!--External libs-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <!--Application-->
+    <script src="app.js"></script>
+    <script>   
+        init();
+        initMaterializePlugins();
+    </script>
+  </body>
+</html>      
