@@ -99,12 +99,14 @@ function listenDB(){
         $("#orders-table tr").remove();
         querySnapshot.forEach(doc => {
             const data = doc.data();
+            const formattedOrderNumber = utils.formatOrderNumber(data.order_number);
+            const dataOrderId = formattedOrderNumber == "N/A" ? "-1" : formattedOrderNumber;
             const $tr = $('<tr>').append(
-                $('<td>').text(boards[data.board_id]),
-                $('<td>').text(data.order_number),
-                $('<td>').text(utils.generateDate(data.order_date)),
-                $('<td>').text(utils.generateDate(data.ship_date)),
-                $('<td>').text(utils.generateDate(data.receive_date))
+                $('<td data=' + data.board_id +'>').text(boards[data.board_id]),
+                $('<td data=' + dataOrderId + '>').text(formattedOrderNumber),
+                $('<td data=' + (data.order_date? data.order_date.seconds : '-1') + '>').text(utils.generateDate(data.order_date)),
+                $('<td data=' + (data.ship_date? data.ship_date.seconds : '-1')+ '>').text(utils.generateDate(data.ship_date)),
+                $('<td data=' + (data.receive_date? data.receive_date.seconds : '-1') + '>').text(utils.generateDate(data.receive_date))
             );
             if(doc.id == uid){
                 $tr.css('background-color', '#f2f2f2');
@@ -155,11 +157,24 @@ function waitForAuth(){
 }
 
 const utils = {
+    numberRegex: RegExp("^#*([0-9]*?x*)$"),
     generateDate:function(date){
         return date === undefined ? "N/A" : this.format(date);
     },
     format:function(date){
         return moment(date.toDate()).format('MMMM Do');
+    },
+    formatOrderNumber: function(ostring) {
+        let regexr = this.numberRegex.exec(ostring);
+        if(!regexr || regexr == null || regexr.length < 2 || !regexr[1]) {
+            return "N/A";
+        } else {
+            let match = regexr[1].split("");
+            for(let i = match.length; i >= match.length - 3; i--) {
+                match[i] = "x";
+            }
+            return match.join("");
+        }
     }
 }
 
@@ -224,3 +239,25 @@ $(document).ready(function(){
    
     M.updateTextFields();
 });
+
+// Adapted from https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript/49041392#49041392
+// Sorting
+const SortUtils = {
+    getCellData: (tr, idx) => {
+        return tr.children[idx].getAttribute("data") || tr.children[idx].textContent 
+    },
+    comparer: (idx, asc) => (a, b) => ((v1, v2) => 
+        v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+        )(SortUtils.getCellData(asc ? a : b, idx), SortUtils.getCellData(asc ? b : a, idx))  
+}
+
+let t = null;
+// do the work...
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+    const table = th.closest('table');
+    console.log(table);
+    t = table.querySelector("tbody");
+    Array.from(t.querySelectorAll('tr'))
+        .sort(SortUtils.comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => t.appendChild(tr) );
+})));
