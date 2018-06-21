@@ -101,7 +101,7 @@ function listenDB(){
             const data = doc.data();
             const $tr = $('<tr>').append(
                 $('<td>').text(boards[data.board_id]),
-                $('<td>').text(data.order_number),
+                $('<td>').text(utils.formatOrderNumber(data.order_number)),
                 $('<td>').text(utils.generateDate(data.order_date)),
                 $('<td>').text(utils.generateDate(data.ship_date)),
                 $('<td>').text(utils.generateDate(data.receive_date))
@@ -155,11 +155,24 @@ function waitForAuth(){
 }
 
 const utils = {
+    numberRegex: RegExp("^#*([0-9]*?x*)$"),
     generateDate:function(date){
         return date === undefined ? "N/A" : this.format(date);
     },
     format:function(date){
         return moment(date.toDate()).format('MMMM Do');
+    },
+    formatOrderNumber: function(ostring) {
+        let regexr = this.numberRegex.exec(ostring);
+        if(!regexr || regexr == null || regexr.length < 2 || !regexr[1]) {
+            return "N/A";
+        } else {
+            let match = regexr[1].split("");
+            for(let i = match.length; i >= match.length - 3; i--) {
+                match[i] = "x";
+            }
+            return match.join("");
+        }
     }
 }
 
