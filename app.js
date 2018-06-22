@@ -95,9 +95,12 @@ function saveOrder(order){
 
 function listenDB(){
     orders.onSnapshot(function(querySnapshot){
+
         //todo: implement docChanges() for better performance when we'll have lots of orders in the list
         $("#orders-table tr").remove();
+        let count = 0;
         querySnapshot.forEach(doc => {
+            count += 1;
             const data = doc.data();
             const formattedOrderNumber = utils.formatOrderNumber(data.order_number);
             const dataOrderId = formattedOrderNumber == "N/A" ? "-1" : formattedOrderNumber;
@@ -113,6 +116,8 @@ function listenDB(){
             }
             $tr.appendTo('#orders-table');
         });
+        $("#tracked-or-loading").text(" orders tracked");
+        $("#order-count").text(count);
     });
 }
 
