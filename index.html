@@ -4,6 +4,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/> 
+    <link rel="manifest" href="/manifest.json">
     <meta charset="utf-8"/>   
     <style>
         .card-panel .card-title {
@@ -19,7 +20,11 @@
         .middle{
             vertical-align: middle;
         }
-        .middle:hover{
+        .modal-trigger, .modal-trigger:hover{
+            background-color:#039be5;
+        }
+        
+        th:hover {
             cursor: pointer;
         }
         </style>
@@ -30,7 +35,7 @@
         <div class="row">
             <div class="col s12 m10 l8">
                 <div class="card-panel">   
-                    <span class="card-title">Share your Boosted order status  <a class="modal-trigger" href="#modal_info" alt="about"><i class="material-icons middle">info_outline</i></a></span>
+                    <span class="card-title">Share your Boosted order status  <a id="info" class="modal-trigger pulse btn-floating" href="#modal_info" alt="about"><i class="material-icons middle">info_outline</i></a></span>
                     <div class="input-field">
                             <select id="board_list">
                                 <option value="0">Boosted Mini S</option>
@@ -89,16 +94,22 @@
                     </div>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Board</th>
+                                
+                            <tr class="headerLb">
+                                <th><i class="middle material-icons tiny">sort_by_alpha</i>Board</th>
                                 <th>Order #</th>
                                 <th>Order date</th>
                                 <th>Ship date</th>
                                 <th>Receive date</th>
                             </tr>
                         </thead>
-                        <tbody id="orders-table"></tbody>
+                        <tbody id="orders-table">
+                            <tr>
+                                <td>Loading...</td>
+                            </tr>
+                        </tbody>
                     </table>
+
                 </div>
             </div>
         </div>          
@@ -122,6 +133,7 @@
                 This means that if you want to update the status of your order for others to see, 
                 you have to use the same computer and browser
                 used for creating it. Otherwise, it will create a duplicate order status in the database.
+                You can update the status of your order at all times. Just update the fields and hit save.
             </p>
             <p>You never have to refresh the page. It works in real time as people are updating their order status on the app</p>
             <p>Use it to reduce your BB anxiety ;). We are all very impatient to receive our Boosted Board</p>
@@ -137,6 +149,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <!--Application-->
+    <script>
+        
+    </script>
     <script src="app.js"></script>
     <script>   
         init();

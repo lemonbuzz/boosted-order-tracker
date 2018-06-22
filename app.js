@@ -63,10 +63,6 @@ function initMaterializePlugins(){
 }
 
 function saveOrder(order){
-    console.log(order);
-    if(shipConfirmationCheckBox.attr('checked')==true){
-        console.log("YOO");
-    }
     if(uid === undefined){
         M.toast({html: 'Error!'});
         return;
@@ -83,7 +79,6 @@ function saveOrder(order){
         M.toast({html: 'Please enter the order date'});
         return;
     }
-    
     orders.doc(uid).set(order, { merge: true })
     .then(()=>{
         M.toast({html: 'Saved!'});
@@ -116,7 +111,7 @@ function listenDB(){
             }
             $tr.appendTo('#orders-table');
         });
-        $("#tracked-or-loading").text(" orders tracked");
+        $("#tracked-or-loading").text(" orders have been shared!");
         $("#order-count").text(count);
     });
 }
@@ -219,6 +214,10 @@ $(document).ready(function(){
         saveOrder(order);
     });
 
+    $("#info").click(function(){
+        $(this).removeClass("pulse");
+    });
+
     shipConfirmationCheckBox.change(function(){
         if($(this).is(":checked")){
             $("#ship_confirmation_container").removeClass("hidden");
@@ -241,6 +240,7 @@ $(document).ready(function(){
     });
 
     waitForAuth();
+    
    
     M.updateTextFields();
 });
@@ -260,7 +260,6 @@ let t = null;
 // do the work...
 document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
     const table = th.closest('table');
-    console.log(table);
     t = table.querySelector("tbody");
     Array.from(t.querySelectorAll('tr'))
         .sort(SortUtils.comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
