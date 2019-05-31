@@ -1,3 +1,5 @@
+***THANKS FOR 3.2k users!***
+
 Very minimalistic app.\
 Created with Firebase. Uses Firestore Database\
 Don't mind the spaghetti ;)\
